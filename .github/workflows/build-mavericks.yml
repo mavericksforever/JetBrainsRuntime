@@ -38,7 +38,7 @@ jobs:
       - name: Install Boot JDK
         run: |
           curl -sL -o /tmp/bootjdk.tar.gz \
-            "https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-25.0.2-osx-aarch64-b373.8.tar.gz"
+            "https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk-25.0.2-osx-aarch64-b373.8.tar.gz"
           mkdir -p ${{ runner.temp }}/bootjdk
           tar xzf /tmp/bootjdk.tar.gz -C ${{ runner.temp }}/bootjdk --strip-components=2
 
