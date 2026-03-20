@@ -25,7 +25,6 @@
 
 #import <sys/stat.h>
 #import <Cocoa/Cocoa.h>
-#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import "ThreadUtilities.h"
 #import "JNIUtilities.h"

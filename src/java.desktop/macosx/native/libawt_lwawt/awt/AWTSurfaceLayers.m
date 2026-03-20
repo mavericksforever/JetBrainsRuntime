@@ -29,7 +29,9 @@
 #import "JNIUtilities.h"
 
 #import <QuartzCore/CATransaction.h>
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101100
 #import <QuartzCore/CAMetalLayer.h>
+#endif
 
 @implementation AWTSurfaceLayers
 
@@ -71,8 +73,11 @@
 // Updates back buffer size of the layer if it's an OpenGL/Metal layer
 // including all OpenGL/Metal sublayers
 + (void) repaintLayersRecursively:(CALayer*)aLayer {
-    if ([aLayer isKindOfClass:[CAOpenGLLayer class]] ||
-        [aLayer isKindOfClass:[CAMetalLayer class]]) {
+    if ([aLayer isKindOfClass:[CAOpenGLLayer class]]
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101100
+        || [aLayer isKindOfClass:[CAMetalLayer class]]
+#endif
+    ) {
         [aLayer setNeedsDisplay];
     }
     for(CALayer *child in aLayer.sublayers) {
