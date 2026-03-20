@@ -73,7 +73,7 @@ jobs:
       - name: Package JDK
         run: |
           cd build/macosx-x86_64-server-release/images/jdk-bundle
-          COPYFILE_DISABLE=1 tar czf ${{ runner.temp }}/jbr25-mavericks-x86_64.tar.gz jdk-*.jdk
+          COPYFILE_DISABLE=1 tar czf ${{ runner.temp }}/jbr25-mavericks-x86_64.tar.gz --no-xattrs --no-mac-metadata jdk-*.jdk
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
