@@ -40,7 +40,7 @@ jobs:
           curl -sL -o /tmp/bootjdk.tar.gz \
             "https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-25.0.2-osx-aarch64-b373.8.tar.gz"
           mkdir -p ${{ runner.temp }}/bootjdk
-          tar xzf /tmp/bootjdk.tar.gz -C ${{ runner.temp }}/bootjdk --strip-components=1
+          tar xzf /tmp/bootjdk.tar.gz -C ${{ runner.temp }}/bootjdk --strip-components=2
 
       - name: Configure JBR
         run: |
@@ -53,8 +53,8 @@ jobs:
             --build=arm64-apple-darwin \
             --host=x86_64-apple-darwin13.0.0 \
             --with-sysroot=$SDK_PATH \
-            --with-boot-jdk=${{ runner.temp }}/bootjdk \
-            --with-build-jdk=${{ runner.temp }}/bootjdk \
+            --with-boot-jdk=${{ runner.temp }}/bootjdk/Home \
+            --with-build-jdk=${{ runner.temp }}/bootjdk/Home \
             --with-toolchain-type=clang \
             --disable-warnings-as-errors \
             --with-jvm-variants=server \
