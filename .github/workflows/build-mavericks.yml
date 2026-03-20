@@ -46,8 +46,8 @@ jobs:
         run: |
           LLVM_PATH="$(brew --prefix llvm@17)/bin"
           SDK_PATH="${{ runner.temp }}/MacOSX10.9.sdk"
-          LEGACY_INCLUDE="${{ github.workspace }}/mavericks-compat"
-          LEGACY_LIB="${{ runner.temp }}/legacy/lib"
+          LEGACY_PREFIX="${{ runner.temp }}/legacy"
+          COMPAT_DIR="${{ github.workspace }}/mavericks-compat"
 
           bash configure \
             --build=arm64-apple-darwin \
@@ -62,13 +62,13 @@ jobs:
             CXX="$LLVM_PATH/clang++" \
             CPP="$LLVM_PATH/clang -E -arch x86_64 -isysroot $SDK_PATH" \
             CXXCPP="$LLVM_PATH/clang++ -E -arch x86_64 -isysroot $SDK_PATH" \
-            --with-extra-cflags="-arch x86_64 -target x86_64-apple-macos10.9 -isysroot $SDK_PATH -I$LEGACY_INCLUDE -include $LEGACY_INCLUDE/jbr_compat.h -DGL_SILENCE_DEPRECATION" \
-            --with-extra-cxxflags="-arch x86_64 -target x86_64-apple-macos10.9 -isysroot $SDK_PATH -I$LEGACY_INCLUDE -include $LEGACY_INCLUDE/jbr_compat.h -DGL_SILENCE_DEPRECATION" \
-            --with-extra-ldflags="-L$LEGACY_LIB -lMacportsLegacySupport -Wl,-undefined,dynamic_lookup -isysroot $SDK_PATH" \
+            --with-extra-cflags="-arch x86_64 -target x86_64-apple-macos10.9 -isysroot $SDK_PATH -I$LEGACY_PREFIX/include -I$COMPAT_DIR -include $COMPAT_DIR/jbr_compat.h -DGL_SILENCE_DEPRECATION" \
+            --with-extra-cxxflags="-arch x86_64 -target x86_64-apple-macos10.9 -isysroot $SDK_PATH -I$LEGACY_PREFIX/include -I$COMPAT_DIR -include $COMPAT_DIR/jbr_compat.h -DGL_SILENCE_DEPRECATION" \
+            --with-extra-ldflags="-L$LEGACY_PREFIX/lib -lMacportsLegacySupport -Wl,-undefined,dynamic_lookup -isysroot $SDK_PATH" \
             --with-extra-asflags="-arch x86_64 -isysroot $SDK_PATH"
 
       - name: Build JBR
-        run: make images JOBS=$(sysctl -n hw.ncpu)
+        run: make images MIG="mig -arch x86_64" JOBS=$(sysctl -n hw.ncpu)
 
       - name: Package JDK
         run: |
