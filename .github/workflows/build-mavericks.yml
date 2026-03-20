@@ -16,35 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install tools
-        run: brew install llvm@17 autoconf
-
-      - name: Cache macports-legacy-support
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.temp }}/legacy
-          key: legacy-support-jbr-v1
-
-      - name: Build macports-legacy-support
+      - name: Install MacPorts
         run: |
-          if [ ! -f "${{ runner.temp }}/legacy/lib/libMacportsLegacySupport.a" ]; then
-            git clone --depth 1 https://github.com/macports/macports-legacy-support.git /tmp/legacy-src
-            cd /tmp/legacy-src
-            make PREFIX=${{ runner.temp }}/legacy \
-              CFLAGS="-arch x86_64 -mmacosx-version-min=${{ env.DEPLOYMENT_TARGET }}" \
-              LDFLAGS="-arch x86_64 -mmacosx-version-min=${{ env.DEPLOYMENT_TARGET }}" \
-              install
-            rm -f ${{ runner.temp }}/legacy/lib/libMacportsLegacySupport.dylib
-          fi
-          cp -R ${{ runner.temp }}/legacy/include/* mavericks-compat/include/ 2>/dev/null || true
+          curl -sL -o /tmp/macports.pkg \
+            "https://github.com/macports/macports-base/releases/download/v2.10.7/MacPorts-2.10.7-15-Sequoia.pkg"
+          sudo installer -pkg /tmp/macports.pkg -target /
+          echo "/opt/local/bin" >> $GITHUB_PATH
 
-      - name: Download macOS 10.9 SDK
+      - name: Install dependencies via MacPorts
         run: |
-          curl -sL -o /tmp/MacOSX10.9.sdk.tar.xz \
-            "https://github.com/nickhutchinson/Xcode-SDKs/releases/download/xcode-5.1/MacOSX10.9.sdk.tar.xz" \
-            || curl -sL -o /tmp/MacOSX10.9.sdk.tar.xz \
-            "https://github.com/nickhutchinson/Xcode-SDKs/releases/download/xcode-6.2/MacOSX10.9.sdk.tar.xz"
-          tar xf /tmp/MacOSX10.9.sdk.tar.xz -C ${{ runner.temp }}
+          sudo port -N install MacOSX10.9.sdk legacy-support +universal
+          brew install llvm@17 autoconf
 
       - name: Install Boot JDK
         run: |
@@ -56,9 +38,9 @@ jobs:
       - name: Configure JBR
         run: |
           LLVM_PATH="$(brew --prefix llvm@17)/bin"
-          SDK_PATH="${{ runner.temp }}/MacOSX10.9.sdk"
+          SDK_PATH="/opt/local/libexec/MacOSX10.9.sdk"
           LEGACY_INCLUDE="${{ github.workspace }}/mavericks-compat/include"
-          LEGACY_LIB="${{ runner.temp }}/legacy/lib"
+          LEGACY_LIB="/opt/local/lib"
 
           bash configure \
             --build=arm64-apple-darwin \
