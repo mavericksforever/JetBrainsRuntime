@@ -31,10 +31,10 @@
 #import <AppKit/NSAccessibility.h>
 
 
-@interface StaticTextAccessibility : CommonTextAccessibility<NSAccessibilityStaticText> {
+@interface StaticTextAccessibility : CommonTextAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSString * _Nullable)accessibilityAttributedStringForRange:(NSRange)range;
 - (NSString * _Nullable)accessibilityValue;
 - (NSRange)accessibilityVisibleCharacterRange;

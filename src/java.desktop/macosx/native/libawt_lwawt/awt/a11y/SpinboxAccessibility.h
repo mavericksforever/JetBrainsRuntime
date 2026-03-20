@@ -28,10 +28,10 @@
 
 #import <AppKit/AppKit.h>
 
-@interface SpinboxAccessibility : CommonComponentAccessibility <NSAccessibilityStepper> {
+@interface SpinboxAccessibility : CommonComponentAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSString * _Nullable)accessibilityLabel;
 - (id _Nullable)accessibilityValue;
 - (BOOL)accessibilityPerformDecrement;

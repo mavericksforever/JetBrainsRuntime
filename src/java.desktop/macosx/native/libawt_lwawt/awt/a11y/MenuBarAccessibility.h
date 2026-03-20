@@ -30,5 +30,5 @@
 @interface MenuBarAccessibility : CommonComponentAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 @end

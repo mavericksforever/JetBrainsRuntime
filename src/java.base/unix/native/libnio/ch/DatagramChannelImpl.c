@@ -50,11 +50,7 @@ Java_sun_nio_ch_DatagramChannelImpl_disconnect0(JNIEnv *env, jclass clazz,
     jint fd = fdval(env, fdo);
     int rv;
 
-#if defined(__APPLE__)
-    // On macOS systems we use disconnectx
-    rv = disconnectx(fd, SAE_ASSOCID_ANY, SAE_CONNID_ANY);
-#else
-    SOCKETADDRESS sa;
+SOCKETADDRESS sa;
     memset(&sa, 0, sizeof(sa));
     #if defined(_ALLBSD_SOURCE)
         sa.sa.sa_family = isIPv6 ? AF_INET6 : AF_INET;
@@ -64,9 +60,8 @@ Java_sun_nio_ch_DatagramChannelImpl_disconnect0(JNIEnv *env, jclass clazz,
     socklen_t len = isIPv6 ? sizeof(struct sockaddr_in6) :
                              sizeof(struct sockaddr_in);
     rv = connect(fd, &sa.sa, len);
-#endif
 
-#if defined(_ALLBSD_SOURCE) && !defined(__APPLE__)
+#if defined(_ALLBSD_SOURCE)
     // On _ALLBSD_SOURCE except __APPLE__ we consider EADDRNOTAVAIL
     // error to be OK and ignore it. __APPLE__ systems are excluded
     // in this check since for __APPLE__ systems, unlike other BSD systems,

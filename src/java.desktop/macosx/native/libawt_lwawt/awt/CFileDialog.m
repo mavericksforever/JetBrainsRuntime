@@ -137,22 +137,7 @@ canCreateDirectories:(BOOL)inCreateDirectories
         [thePanel setTitle:fTitle];
 
         if (fFileTypes != nil) {
-            if (@available(macOS 11, *)) {
-                int nTypes = (int)[fFileTypes count];
-                NSMutableArray *contentTypes = [NSMutableArray arrayWithCapacity:nTypes];
-                for (int i = 0; i < nTypes; ++i) {
-                    NSString *fileType = (NSString *)[fFileTypes objectAtIndex:i];
-                    UTType *contentType = [UTType typeWithFilenameExtension:fileType conformingToType:UTTypeData];
-                    if (contentType != nil) {
-                        [contentTypes addObject:contentType];
-                    } else if (fileType.length == 0) {
-                        [contentTypes addObject:UTTypeUnixExecutable];
-                    }
-                }
-                [thePanel setAllowedContentTypes:contentTypes];
-            } else {
-                [thePanel setAllowedFileTypes:fFileTypes];
-            }
+            [thePanel setAllowedFileTypes:fFileTypes];
         }
 
         if (fNavigateApps) {

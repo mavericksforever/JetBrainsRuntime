@@ -478,7 +478,7 @@ untilDate:(NSDate *)expiration inMode:(NSString *)mode dequeue:(BOOL)deqFlag {
                         @"Exception in NSApplicationAWT:\n %@\n",
                         exception]];
 
-        NSArray<NSString *> *stack = [exception callStackSymbols];
+        NSArray *stack = [exception callStackSymbols];
 
         for (NSUInteger i = 0; i < stack.count; i++) {
             [info appendString:stack[i]];

@@ -61,7 +61,7 @@ extern "C" {
 //==================================================================================
 /*
  * AWTTrayIconView */
-@interface AWTTrayIconView : NSStatusBarButton <NSMenuDelegate> {
+@interface AWTTrayIconView : NSButton <NSMenuDelegate> {
 @public
     AWTTrayIcon *trayIcon;
     NSTrackingArea *trackingArea;

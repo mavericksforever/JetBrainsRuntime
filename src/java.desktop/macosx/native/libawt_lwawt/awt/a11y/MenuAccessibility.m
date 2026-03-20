@@ -34,12 +34,12 @@ static jclass sjc_CAccessibility = NULL;
  * MenuBar components
  */
 @implementation MenuAccessibility
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
         if ([[[self parent] javaRole] isEqualToString:@"combobox"]) {
             return NSAccessibilityPopUpButtonRole;
         } else if ([[[self parent] javaRole] isEqualToString:@"menubar"]) {
-            return NSAccessibilityMenuBarItemRole;
+            return NSAccessibilityMenuItemRole;
         } else {
             return NSAccessibilityMenuRole;
         }

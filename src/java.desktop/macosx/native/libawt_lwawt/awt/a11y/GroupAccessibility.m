@@ -33,7 +33,7 @@
  * classes reflecting the logic of the class.
  */
 @implementation GroupAccessibility
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityGroupRole;
 }

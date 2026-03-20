@@ -30,9 +30,9 @@
 
 @synthesize wrappedChild;
 
-- (NSAccessibilityRole)accessibilityRole {
+- (NSString *)accessibilityRole {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override -(NSAccessibilityRole)accessibilityRole in a subclass"]
+                                   reason:[NSString stringWithFormat:@"You must override -(NSString *)accessibilityRole in a subclass"]
                                  userInfo:nil];
 }
 

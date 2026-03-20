@@ -31,6 +31,6 @@
 @interface MenuItemAccessibility : ButtonAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (void)handleAction:(NSMenuItem * _Nonnull)sender;
 @end

@@ -279,7 +279,6 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
           -framework ApplicationServices \
           -framework Cocoa \
           -framework Foundation \
-          -framework Metal \
           -framework Security, \
       LIBS_aix := $(LIBDL) $(X_LIBS) -lX11 -lXext, \
       LIBS_windows := delayimp.lib gdi32.lib kernel32.lib user32.lib, \
@@ -502,31 +501,15 @@ ifeq ($(call isTargetOs, macosx), true)
   ## Build libosxui
   ##############################################################################
 
-  SHADERS_SRC := \
-      $(TOPDIR)/src/java.desktop/macosx/native/libawt_lwawt/java2d/metal/shaders.metal
+  SHADERS_SRC :=
   SHADERS_SUPPORT_DIR := $(SUPPORT_OUTPUTDIR)/native/java.desktop/libosxui
   SHADERS_AIR := $(SHADERS_SUPPORT_DIR)/shaders.air
   SHADERS_LIB := $(call FindLibDirForModule, $(MODULE))/shaders.metallib
 
-  $(eval $(call SetupExecute, metal_shaders, \
-      INFO := Running metal on $(notdir $(SHADERS_SRC)) (for libosxui.dylib), \
-      DEPS := $(SHADERS_SRC), \
-      OUTPUT_FILE := $(SHADERS_AIR), \
-      SUPPORT_DIR := $(SHADERS_SUPPORT_DIR), \
-      COMMAND := $(METAL) -c -std=osx-metal2.0 \
-          -mmacosx-version-min=$(MACOSX_VERSION_MIN) \
-          -o $(SHADERS_AIR) $(SHADERS_SRC), \
-  ))
+  # $(eval $(call SetupExecute, metal_shaders, ...))
+  # $(eval $(call SetupExecute, metallib_shaders, ...))
 
-  $(eval $(call SetupExecute, metallib_shaders, \
-      INFO := Running metallib on $(notdir $(SHADERS_AIR)) (for libosxui.dylib), \
-      DEPS := $(SHADERS_AIR), \
-      OUTPUT_FILE := $(SHADERS_LIB), \
-      SUPPORT_DIR := $(SHADERS_SUPPORT_DIR), \
-      COMMAND := $(METALLIB) -o $(SHADERS_LIB) $(SHADERS_AIR), \
-  ))
-
-  TARGETS += $(SHADERS_LIB)
+  # TARGETS += $(SHADERS_LIB)
 
   $(eval $(call SetupJdkLibrary, BUILD_LIBOSXUI, \
       NAME := osxui, \
@@ -542,13 +525,12 @@ ifeq ($(call isTargetOs, macosx), true)
           -framework ApplicationServices \
           -framework Carbon \
           -framework Cocoa \
-          -framework JavaRuntimeSupport \
-          -framework Metal, \
+          -framework JavaRuntimeSupport, \
   ))
 
   TARGETS += $(BUILD_LIBOSXUI)
 
-  $(BUILD_LIBOSXUI): $(SHADERS_LIB)
+  # $(BUILD_LIBOSXUI): $(SHADERS_LIB)
 endif
 
 ################################################################################

@@ -62,7 +62,7 @@ static jmethodID sjm_getAccessibleName = NULL;
     return index;
 }
 
-- (NSArray<NSNumber *> *)getTableSelectedInfo:(jint)info
+- (NSArray *)getTableSelectedInfo:(jint)info
 {
     if (fAccessible == NULL) return 0;
 
@@ -78,12 +78,12 @@ static jmethodID sjm_getAccessibleName = NULL;
     }
     jsize arrayLen = (*env)->GetArrayLength(env, selected);
     jint *indexsis = (*env)->GetIntArrayElements(env, selected, 0);
-    NSMutableArray<NSNumber *> *nsArraySelected = [NSMutableArray<NSNumber *> arrayWithCapacity:arrayLen];
+    NSMutableArray *nsArraySelected = [NSMutableArray arrayWithCapacity:arrayLen];
     for (int i = 0; i < arrayLen; i++) {
         [nsArraySelected addObject:[NSNumber numberWithInt:indexsis[i]]];
     }
     (*env)->DeleteLocalRef(env, selected);
-    return [NSArray<NSNumber *> arrayWithArray:nsArraySelected];
+    return [NSArray arrayWithArray:nsArraySelected];
 }
 
 - (int)accessibleRowAtIndex:(int)index
@@ -121,7 +121,7 @@ static jmethodID sjm_getAccessibleName = NULL;
 {
     if (rowCache == nil) {
         int rowCount = [self accessibilityRowCount];
-        rowCache = [[NSMutableDictionary<NSNumber*, id> dictionaryWithCapacity:rowCount] retain];
+        rowCache = [[NSMutableDictionary dictionaryWithCapacity:rowCount] retain];
         cacheValid = YES;
     }
 
@@ -169,9 +169,9 @@ static jmethodID sjm_getAccessibleName = NULL;
     return [NSArray arrayWithArray:children];
 }
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilitySelectedRows
+- (nullable NSArray *)accessibilitySelectedRows
 {
-    NSArray<NSNumber *> *selectedRowIndexses = [self getTableSelectedInfo:sun_lwawt_macosx_CAccessibility_JAVA_AX_ROWS];
+    NSArray *selectedRowIndexses = [self getTableSelectedInfo:sun_lwawt_macosx_CAccessibility_JAVA_AX_ROWS];
     NSMutableArray *children = [NSMutableArray arrayWithCapacity:[selectedRowIndexses count]];
     for (NSNumber *index in selectedRowIndexses) {
         [children addObject:[self createRowWithIndex:index.unsignedIntValue]];

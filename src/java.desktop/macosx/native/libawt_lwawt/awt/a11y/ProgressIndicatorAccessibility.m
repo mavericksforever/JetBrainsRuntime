@@ -31,7 +31,7 @@
  */
 @implementation ProgressIndicatorAccessibility
 
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityProgressIndicatorRole;
 }

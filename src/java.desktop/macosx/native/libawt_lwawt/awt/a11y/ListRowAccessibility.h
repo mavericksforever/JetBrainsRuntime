@@ -26,5 +26,5 @@
 
 #import "ComponentWrapperAccessibility.h"
 
-@interface ListRowAccessibility : ComponentWrapperAccessibility <NSAccessibilityRow>
+@interface ListRowAccessibility : ComponentWrapperAccessibility 
 @end

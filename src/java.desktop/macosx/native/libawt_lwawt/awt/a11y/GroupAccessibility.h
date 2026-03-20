@@ -28,9 +28,9 @@
 
 #import <AppKit/AppKit.h>
 
-@interface GroupAccessibility : CommonComponentAccessibility <NSAccessibilityGroup> {
+@interface GroupAccessibility : CommonComponentAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSArray * _Nullable)accessibilityChildren;
 @end

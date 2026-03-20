@@ -23,7 +23,7 @@
  * questions.
  */
 
-#import <Metal/Metal.h>
+// Metal not available on 10.9
 #import <Trace.h>
 #import "sun_awt_CGraphicsEnvironment.h"
 #import "AWT_debug.h"
@@ -248,25 +248,7 @@ JNIEXPORT jint JNICALL Java_sun_awt_CGraphicsEnvironment_initMetal
 
         __block NSString* path = NormalizedPathNSStringFromJavaString(env, shadersLibName);
 
-        [ThreadUtilities performOnMainThreadWaiting:YES block:^() {
-
-          id<MTLDevice> device = MTLCreateSystemDefaultDevice();
-          if (device != nil) {
-              NSError* error = nil;
-              id<MTLLibrary> lib = [device newLibraryWithFile:path error:&error];
-              if (lib != nil) {
-                  ret = sun_awt_CGraphicsEnvironment_MTL_SUPPORTED;
-              } else {
-                  J2dRlsTraceLn(J2D_TRACE_ERROR, "CGraphicsEnvironment_initMetal - "
-                                                 "Failed to load Metal shader library.");
-                  ret = sun_awt_CGraphicsEnvironment_MTL_NO_SHADER_LIB;
-              }
-          } else {
-              J2dRlsTraceLn(J2D_TRACE_ERROR, "CGraphicsEnvironment_initMetal - "
-                                             "Failed to create MTLDevice.");
-              ret = sun_awt_CGraphicsEnvironment_MTL_NO_DEVICE;
-          }
-        }];
+        // Metal not available on macOS 10.9
 
     JNI_COCOA_EXIT(env);
     return ret;

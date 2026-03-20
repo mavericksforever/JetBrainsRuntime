@@ -402,7 +402,7 @@ static void readAppleSymbolicHotkeys(struct SymbolicHotKey hotkeys[NUM_SYMBOLIC_
     // Called from the main thread
 
     @try {
-        NSDictionary<NSString *, id> *shk = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.symbolichotkeys"];
+        NSDictionary *shk = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.symbolichotkeys"];
 
         //        AppleSymbolicHotKeys =     {
         //                10 =         {
@@ -448,7 +448,7 @@ static void readAppleSymbolicHotkeys(struct SymbolicHotKey hotkeys[NUM_SYMBOLIC_
                      [[hkDesc className] UTF8String]);
                 continue;
             }
-            NSDictionary<id, id> *sdict = hkDesc;
+            NSDictionary *sdict = hkDesc;
 
             id objEnabled = sdict[@"enabled"];
             BOOL enabled = objEnabled != nil && [objEnabled boolValue] == YES;
@@ -522,7 +522,7 @@ static void updateAppleSymbolicHotkeysCache() {
 }
 
 static void iterateAppleSymbolicHotkeys(struct SymbolicHotKey hotkeys[NUM_SYMBOLIC_HOTKEYS], Visitor visitorBlock) {
-    const NSOperatingSystemVersion macOSVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+    NSOperatingSystemVersion macOSVersion = {10, 9, 0}; // Hardcoded for 10.9;
 
     for (int uid = 0; uid < NUM_SYMBOLIC_HOTKEYS; ++uid) {
         struct SymbolicHotKey* hotkey = &hotkeys[uid];
@@ -563,7 +563,7 @@ static void iterateAppleSymbolicHotkeys(struct SymbolicHotKey hotkeys[NUM_SYMBOL
 static void readPbsHotkeys(Visitor visitorBlock) {
     @try {
         NSMutableDictionary *allDefParams = createDefaultParams();
-        NSDictionary<NSString *, id> *pbs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"pbs"];
+        NSDictionary *pbs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"pbs"];
         if (pbs) {
 //        NSServicesStatus =     {
 //                "com.apple.Terminal - Open man Page in Terminal - openManPage" =         {
@@ -581,7 +581,7 @@ static void readPbsHotkeys(Visitor visitorBlock) {
 //        };
 //    }
 
-            NSDictionary<NSString *, id> *services = [pbs valueForKey:@"NSServicesStatus"];
+            NSDictionary *services = [pbs valueForKey:@"NSServicesStatus"];
             if (services) {
                 for (NSString *key in services) {
                     id value = services[key];
@@ -594,7 +594,7 @@ static void readPbsHotkeys(Visitor visitorBlock) {
                     DefaultParams *defParams = [allDefParams objectForKey:key];
                     [allDefParams removeObjectForKey:key];
 
-                    NSDictionary<NSString *, id> *sdict = value;
+                    NSDictionary *sdict = value;
                     NSString *key_equivalent = sdict[@"key_equivalent"];
                     if (!key_equivalent && defParams != nil) {
                         key_equivalent = defParams.key_equivalent;
@@ -679,7 +679,7 @@ static void readSystemHotkeysImpl(Visitor visitorBlock) {
     [pbsHotKeys addObserver:self forKeyPath:@"NSServicesStatus" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-+ (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey, id> *)change context:(void *)context {
++ (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     // Called after AppleSymbolicHotKeys or pbs hotkeys change.
 
     if ([keyPath isEqualToString:@"AppleSymbolicHotKeys"]) {

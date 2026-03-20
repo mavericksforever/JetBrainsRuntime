@@ -82,9 +82,9 @@
 
 // NSAccessibilityElement protocol methods
 
-- (NSAccessibilitySubrole)accessibilitySubrole
+- (NSString *)accessibilitySubrole
 {
-    return NSAccessibilityTabButtonSubrole;
+    return @"AXTabButtonSubrole";
 }
 
 - (id)accessibilityValue

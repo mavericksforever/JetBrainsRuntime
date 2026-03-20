@@ -414,7 +414,7 @@ var getJibProfilesProfiles = function (input, common, data) {
             dependencies: ["devkit", "gtest", "graphviz", "pandoc", "tidy"],
             configure_args: [
                 "--with-zlib=system",
-                "--with-macosx-version-max=11.00.00",
+                "--with-macosx-version-max=10.09.00",
                 "--enable-compatible-cds-alignment",
                 // Use system SetFile instead of the one in the devkit as the
                 // devkit one may not work on Catalina.

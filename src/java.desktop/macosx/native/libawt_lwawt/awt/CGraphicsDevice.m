@@ -165,7 +165,7 @@ BOOL isValidDisplayMode(CGDisplayModeRef mode) {
         if (architecture == -1) {
             architecture = [[NSRunningApplication currentApplication] executableArchitecture];
         }
-        if (architecture == NSBundleExecutableArchitectureARM64) {
+        if (architecture == 0x0100000c) {
             return (CGDisplayModeGetPixelWidth(mode) >= 800);
         }
     }

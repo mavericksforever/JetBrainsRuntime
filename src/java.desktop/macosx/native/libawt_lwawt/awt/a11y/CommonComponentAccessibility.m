@@ -436,7 +436,7 @@ static jobject sAccessibilityClass = NULL;
 {
     AWT_ASSERT_APPKIT_THREAD;
 
-    NSMutableDictionary<NSAccessibilityNotificationUserInfoKey, id> *dictionary = [NSMutableDictionary<NSAccessibilityNotificationUserInfoKey, id> dictionaryWithCapacity:2];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
     [dictionary setObject:text forKey: NSAccessibilityAnnouncementKey];
 
     if (sAnnouncePriorities == nil) {
@@ -655,7 +655,7 @@ static jobject sAccessibilityClass = NULL;
     }
 }
 
-- (BOOL)accessiblePerformAction:(NSAccessibilityActionName)actionName {
+- (BOOL)accessiblePerformAction:(NSString *)actionName {
     NSMutableDictionary *currentAction = [self getActions:[ThreadUtilities getJNIEnv]];
     if (currentAction == nil) {
         return NO;
@@ -864,7 +864,7 @@ static jobject sAccessibilityClass = NULL;
     return [self accessibilityFocusedUIElement];
 }
 
-- (NSAccessibilityRole)accessibilityRole
+- (NSString *)accessibilityRole
 {
     if (fNSRole == nil) {
         NSString *javaRole = [self javaRole];
@@ -1009,13 +1009,13 @@ static jobject sAccessibilityClass = NULL;
     // cmcnote - should batch these two calls into one that returns an array of two bools, one for vertical and one for horiz
     if (isVertical(env, axContext, fComponent)) {
         (*env)->DeleteLocalRef(env, axContext);
-        return NSAccessibilityOrientationVertical;
+        return 1;
     }
     if (isHorizontal(env, axContext, fComponent)) {
         (*env)->DeleteLocalRef(env, axContext);
-        return NSAccessibilityOrientationHorizontal;
+        return 0;
     }
-    return NSAccessibilityOrientationUnknown;
+    return 0;
 }
 
 - (NSPoint)accessibilityActivationPoint

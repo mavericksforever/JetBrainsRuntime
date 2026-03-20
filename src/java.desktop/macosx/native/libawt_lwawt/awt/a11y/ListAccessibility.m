@@ -32,12 +32,12 @@
 
 // NSAccessibilityElement protocol methods
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilityRows
+- (nullable NSArray *)accessibilityRows
 {
     return [self accessibilityChildren];
 }
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilitySelectedRows
+- (nullable NSArray *)accessibilitySelectedRows
 {
     return [self accessibilitySelectedChildren];
 }

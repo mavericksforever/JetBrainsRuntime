@@ -26,7 +26,7 @@
 
 #import "CommonComponentAccessibility.h"
 
-@interface NavigableTextAccessibility : CommonComponentAccessibility <NSAccessibilityNavigableStaticText>
+@interface NavigableTextAccessibility : CommonComponentAccessibility 
 
 @property(readonly) BOOL accessibleIsPasswordText;
 

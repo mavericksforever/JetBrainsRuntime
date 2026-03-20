@@ -30,7 +30,7 @@
  */
 @implementation StatusbarAccessibility
 
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityValueIndicatorRole;
 }

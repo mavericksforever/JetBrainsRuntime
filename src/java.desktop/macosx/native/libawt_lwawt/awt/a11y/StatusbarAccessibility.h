@@ -31,5 +31,5 @@
 @interface StatusbarAccessibility : GroupAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 @end

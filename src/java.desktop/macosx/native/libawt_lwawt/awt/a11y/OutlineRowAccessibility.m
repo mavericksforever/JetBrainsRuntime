@@ -74,12 +74,12 @@ static jclass sjc_CAccessibility = NULL;
     return isExpanded([ThreadUtilities getJNIEnv], [self axContextWithEnv:[ThreadUtilities getJNIEnv]], self->fComponent);
 }
 
-- (NSAccessibilitySubrole)accessibilitySubrole
+- (NSString *)accessibilitySubrole
 {
     return NSAccessibilityOutlineRowSubrole;
 }
 
-- (NSAccessibilityRole)accessibilityRole
+- (NSString *)accessibilityRole
 {
     return NSAccessibilityRowRole;
 }

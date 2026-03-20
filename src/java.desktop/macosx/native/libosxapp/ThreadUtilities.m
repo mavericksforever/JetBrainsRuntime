@@ -73,8 +73,8 @@ static jobject appkitThreadGroup = NULL;
 
 static NSString* CriticalRunLoopMode = @"AWTCriticalRunLoopMode";
 static NSString* JavaRunLoopMode = @"AWTRunLoopMode";
-static NSArray<NSString*> *javaModes = nil;
-static NSArray<NSString*> *allModesExceptJava = nil;
+static NSArray *javaModes = nil;
+static NSArray *allModesExceptJava = nil;
 
 /* Traceability data */
 static const BOOL forceTracing = NO;
@@ -262,11 +262,11 @@ AWT_ASSERT_APPKIT_THREAD;
 }
 
 + (NSString*)getCaller:(NSString*)prefixSymbol {
-    const NSArray<NSString*> *symbols = NSThread.callStackSymbols;
+    const NSArray *symbols = NSThread.callStackSymbols;
 
     for (NSUInteger i = 2, len = symbols.count; i < len; i++) {
          NSString* symbol = symbols[i];
-         if (![symbol containsString: @"performOnMainThread"]
+         if (![symbol rangeOfString: @"performOnMainThread"].length > 0
              && ((prefixSymbol == nil) || ![symbol containsString: prefixSymbol])) {
              return [symbol retain];
          }
@@ -275,12 +275,12 @@ AWT_ASSERT_APPKIT_THREAD;
 }
 
 + (NSString*)getCallerStack:(NSString*)prefixSymbol {
-    const NSArray<NSString*> *symbols = NSThread.callStackSymbols;
+    const NSArray *symbols = NSThread.callStackSymbols;
 
     int pos = -1;
     for (NSUInteger i = 2, len = symbols.count; i < len; i++) {
          NSString* symbol = symbols[i];
-         if (![symbol containsString: @"performOnMainThread"]
+         if (![symbol rangeOfString: @"performOnMainThread"].length > 0
              && ((prefixSymbol == nil) || ![symbol containsString: prefixSymbol])) {
              pos = i;
              break;
@@ -288,7 +288,7 @@ AWT_ASSERT_APPKIT_THREAD;
     }
     if (pos != -1) {
         const NSRange theRange = NSMakeRange(pos, symbols.count - pos);
-        const NSArray<NSString*> *filteredSymbols = [symbols subarrayWithRange:theRange];
+        const NSArray *filteredSymbols = [symbols subarrayWithRange:theRange];
         return [[filteredSymbols componentsJoinedByString:@"\n"] retain];
     }
     return nil;
@@ -366,7 +366,7 @@ AWT_ASSERT_APPKIT_THREAD;
         if (invokeDirect) {
             [target performSelector:aSelector withObject:arg];
         } else {
-            NSArray<NSString*> *runLoopModes = (useJavaModes) ? javaModes : allModesExceptJava;
+            NSArray *runLoopModes = (useJavaModes) ? javaModes : allModesExceptJava;
             if (wait && isEventDispatchThread()) {
                 void (^blockCopy)(void) = Block_copy(^() {
                     setBlockingEventDispatchThread(YES);
@@ -411,7 +411,7 @@ AWT_ASSERT_APPKIT_THREAD;
     const int mtThreshold = getMainThreadLatencyThreshold();
     const bool doTrace = (enableTracing && doWait);
 
-    NSArray<NSString*> *runLoopModes = (useJavaModes) ? javaModes : allModesExceptJava;
+    NSArray *runLoopModes = (useJavaModes) ? javaModes : allModesExceptJava;
 
     // Perform instrumentation on selector:
     /* Increment global main action id */
@@ -537,7 +537,7 @@ AWT_ASSERT_APPKIT_THREAD;
 }
 
 + (NSMutableDictionary*)threadContextStore {
-    static NSMutableDictionary<NSString*, ThreadTraceContext*>* _threadTraceContextPerName;
+    static NSMutableDictionary* _threadTraceContextPerName;
     static dispatch_once_t oncePredicate;
 
     dispatch_once(&oncePredicate, ^{

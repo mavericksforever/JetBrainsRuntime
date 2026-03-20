@@ -32,7 +32,7 @@
  * This is the protocol for the Menu Bar component
  */
 @implementation MenuBarAccessibility
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityMenuBarRole;
 }

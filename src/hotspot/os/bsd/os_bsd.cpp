@@ -97,6 +97,10 @@
 # include <time.h>
 # include <unistd.h>
 
+#ifndef MAXTHREADNAMESIZE
+#define MAXTHREADNAMESIZE 64
+#endif
+
 #if defined(__FreeBSD__) || defined(__NetBSD__)
   #include <elf.h>
 #endif

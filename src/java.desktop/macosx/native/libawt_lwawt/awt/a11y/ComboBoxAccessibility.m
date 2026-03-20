@@ -93,7 +93,7 @@ static jmethodID sjm_getAccessibleName = NULL;
     return [NSArray arrayWithObject:accessibleSelection];
 }
 
-- (NSAccessibilityRole)accessibilityRole
+- (NSString *)accessibilityRole
 {
     return [self isEditable]
            ? NSAccessibilityComboBoxRole

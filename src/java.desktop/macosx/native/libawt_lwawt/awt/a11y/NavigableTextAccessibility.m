@@ -192,7 +192,7 @@ static jmethodID sjm_getAccessibleEditableText = NULL;
     return [super isAccessibilitySelectorAllowed:selector];
 }
 
-- (NSAccessibilitySubrole)accessibilitySubrole {
+- (NSString *)accessibilitySubrole {
     if ([self accessibleIsPasswordText]) {
         return NSAccessibilitySecureTextFieldSubrole;
     }
@@ -213,7 +213,7 @@ static jmethodID sjm_getAccessibleEditableText = NULL;
     return [javaIntArrayToNSRangeValue(env, axTextRange) rangeValue];
 }
 
-- (NSAccessibilityRole)accessibilityRole {
+- (NSString *)accessibilityRole {
     return [sRoles objectForKey:self.javaRole];
 }
 

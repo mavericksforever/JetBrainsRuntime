@@ -31,7 +31,7 @@
 #import <AppKit/AppKit.h>
 #import "JavaAccessibilityUtilities.h"
 
-@interface CommonComponentAccessibility : NSAccessibilityElement {
+@interface CommonComponentAccessibility : NSObject {
     NSView *fView;
     NSObject *fParent;
 
@@ -96,7 +96,7 @@
 
 - (NSDictionary* _Nullable)getActions:(JNIEnv _Nonnull * _Nonnull)env;
 - (void)getActionsWithEnv:(JNIEnv _Nonnull * _Nonnull)env;
-- (BOOL)accessiblePerformAction:(NSAccessibilityActionName _Nonnull)actionName;
+- (BOOL)accessiblePerformAction:(NSString * _Nonnull)actionName;
 
 - (BOOL)performAccessibleAction:(int)index;
 

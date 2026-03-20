@@ -26,5 +26,5 @@
 
 #import "CommonComponentAccessibility.h"
 
-@interface ListAccessibility : CommonComponentAccessibility <NSAccessibilityList>
+@interface ListAccessibility : CommonComponentAccessibility 
 @end

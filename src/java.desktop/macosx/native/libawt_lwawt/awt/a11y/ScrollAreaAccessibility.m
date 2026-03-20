@@ -56,7 +56,7 @@ static jmethodID sjm_getScrollBar = NULL;
     return contents;
 }
 
-- (id _Nullable)getScrollBarwithOrientation:(enum NSAccessibilityOrientation)orientation
+- (id _Nullable)getScrollBarwithOrientation:(NSAccessibilityOrientation)orientation
 {
     JNIEnv *env = [ThreadUtilities getJNIEnv];
 
@@ -89,12 +89,12 @@ static jmethodID sjm_getScrollBar = NULL;
     while ((aElement = (CommonComponentAccessibility *)[enumerator nextObject])) {
         if ([[aElement accessibilityRole] isEqualToString:NSAccessibilityScrollBarRole]) {
             jobject elementAxContext = [aElement axContextWithEnv:env];
-            if (orientation == NSAccessibilityOrientationHorizontal) {
+            if (orientation == 0) {
                 if (isHorizontal(env, elementAxContext, fComponent)) {
                     (*env)->DeleteLocalRef(env, elementAxContext);
                     return aElement;
                 }
-            } else if (orientation == NSAccessibilityOrientationVertical) {
+            } else if (orientation == 1) {
                 if (isVertical(env, elementAxContext, fComponent)) {
                     (*env)->DeleteLocalRef(env, elementAxContext);
                     return aElement;
@@ -107,7 +107,7 @@ static jmethodID sjm_getScrollBar = NULL;
     return nil;
 }
 
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityScrollAreaRole;
 }
@@ -119,11 +119,11 @@ static jmethodID sjm_getScrollBar = NULL;
 
 - (id _Nullable)accessibilityHorizontalScrollBar
 {
-    return [self getScrollBarwithOrientation:NSAccessibilityOrientationHorizontal];
+    return [self getScrollBarwithOrientation:0];
 }
 
 - (id _Nullable)accessibilityVerticalScrollBar
 {
-    return [self getScrollBarwithOrientation:NSAccessibilityOrientationVertical];
+    return [self getScrollBarwithOrientation:1];
 }
 @end

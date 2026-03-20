@@ -55,17 +55,17 @@ static jmethodID sjm_isTreeRootVisible = NULL;
     return [[super accessibilityLabel] isEqualToString:@"list"] ? @"tree" : [super accessibilityLabel];
 }
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilityRows
+- (nullable NSArray *)accessibilityRows
 {
     return [self accessibilityChildren];
 }
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilitySelectedRows
+- (nullable NSArray *)accessibilitySelectedRows
 {
     return [self accessibilitySelectedChildren];
 }
 
-- (nullable  NSArray<id<NSAccessibilityRow>> *)accessibilityChildren
+- (nullable  NSArray *)accessibilityChildren
 {
     if (![self isCacheValid]) {
         NSArray *t = [super accessibilityChildren];
@@ -79,7 +79,7 @@ static jmethodID sjm_isTreeRootVisible = NULL;
     return rowCache;
 }
 
-- (nullable NSArray<id<NSAccessibilityRow>> *)accessibilitySelectedChildren
+- (nullable NSArray *)accessibilitySelectedChildren
 {
     if (!selectedRowCacheValid) {
         NSArray *t = [super accessibilitySelectedChildren];

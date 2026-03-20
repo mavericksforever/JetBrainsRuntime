@@ -25,9 +25,9 @@
 
 #import "ButtonAccessibility.h"
 
-@interface RadiobuttonAccessibility : ButtonAccessibility <NSAccessibilityRadioButton> {
+@interface RadiobuttonAccessibility : ButtonAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (id _Nonnull)accessibilityValue;
 @end

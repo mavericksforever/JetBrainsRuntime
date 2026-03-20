@@ -28,9 +28,9 @@
 
 #import <AppKit/AppKit.h>
 
-@interface ImageAccessibility : CommonComponentAccessibility <NSAccessibilityImage> {
+@interface ImageAccessibility : CommonComponentAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSString * _Nullable)accessibilityLabel;
 @end

@@ -31,5 +31,5 @@
 @interface MenuAccessibility : GroupAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 @end

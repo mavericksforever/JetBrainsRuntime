@@ -167,7 +167,7 @@ JNI_COCOA_ENTER(env);
 
     NSWindow *window = (NSWindow *)jlong_to_ptr(windowPtr);
     [ThreadUtilities performOnMainThreadWaiting:NO block:^(){
-        if (window.onActiveSpace) [window orderFront:window];
+        if ([window isOnActiveSpace]) [window orderFront:window];
     }];
 
 JNI_COCOA_EXIT(env);
@@ -264,7 +264,7 @@ JNI_COCOA_ENTER(env);
     NSWindow *window = (NSWindow *)jlong_to_ptr(windowPtr);
     NSWindow *relativeTo = (NSWindow *)jlong_to_ptr(relativeToPtr);
     [ThreadUtilities performOnMainThreadWaiting:NO block:^(){
-        if (window.onActiveSpace) [window orderWindow:(NSWindowOrderingMode)order relativeTo:[relativeTo windowNumber]];
+        if ([window isOnActiveSpace]) [window orderWindow:(NSWindowOrderingMode)order relativeTo:[relativeTo windowNumber]];
     }];
 
 JNI_COCOA_EXIT(env);

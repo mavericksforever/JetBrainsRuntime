@@ -32,7 +32,7 @@
 
 // NSAccessibilityElement protocol methods
 
-- (NSAccessibilityRole)accessibilityRole
+- (NSString *)accessibilityRole
 {
     return NSAccessibilityCellRole;
 }

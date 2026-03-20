@@ -28,10 +28,10 @@
 
 #import <AppKit/AppKit.h>
 
-@interface ButtonAccessibility : CommonComponentAccessibility <NSAccessibilityButton> {
+@interface ButtonAccessibility : CommonComponentAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSString * _Nullable)accessibilityLabel;
 - (BOOL)accessibilityPerformPress;
 @end

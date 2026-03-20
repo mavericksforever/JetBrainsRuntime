@@ -166,7 +166,7 @@ static jmethodID jm_getChildrenAndRoles = NULL;
     return (NSArray *)children;
 }
 
-- (NSArray *)accessibilityArrayAttributeValues:(NSAccessibilityAttributeName)attribute index:(NSUInteger)index maxCount:(NSUInteger)maxCount
+- (NSArray *)accessibilityArrayAttributeValues:(NSString *)attribute index:(NSUInteger)index maxCount:(NSUInteger)maxCount
 {
     NSArray *result = nil;
     if ( (maxCount == 1) && [attribute isEqualToString:NSAccessibilityChildrenAttribute]) {

@@ -28,11 +28,11 @@
 
 // This is a tree representation. See: https://developer.apple.com/documentation/appkit/nsoutlineview
 
-@interface OutlineAccessibility : ListAccessibility <NSAccessibilityOutline>
+@interface OutlineAccessibility : ListAccessibility 
 {
-    NSMutableArray<id<NSAccessibilityRow>> *rowCache;
+    NSMutableArray *rowCache;
     BOOL rowCacheValid;
-    NSMutableArray<id<NSAccessibilityRow>> *selectedRowCache;
+    NSMutableArray *selectedRowCache;
     BOOL selectedRowCacheValid;
 }
 @property(readonly) BOOL isTreeRootVisible;

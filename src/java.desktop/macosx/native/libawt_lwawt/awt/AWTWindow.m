@@ -88,7 +88,7 @@ BOOL isWindowAnimationEnabled() {
     return (BOOL)windowAnimationEnabled;
 }
 
-@interface NSTitlebarAccessoryViewController (Private)
+@interface NSViewController (Private)
 - (void)_setHidden:(BOOL)h animated:(BOOL)a;
 @end
 
@@ -182,7 +182,7 @@ static BOOL orderingScheduled = NO;
                                                                 \
 - (void)observeValueForKeyPath:(NSString *)keyPath              \
     ofObject:(id)object                                         \
-    change:(NSDictionary<NSKeyValueChangeKey,id> *)change       \
+    change:(NSDictionary *)change       \
     context:(void *)context {                                   \
     if ([keyPath isEqualToString:@"visible"]) {                 \
         BOOL isVisible =                                        \
@@ -394,7 +394,7 @@ AWT_NS_WINDOW_IMPLEMENTATION
 
 - (void)_setTabBarAccessoryViewController:(id)_controller {
     if (((AWTWindow *)self.delegate).hideTabController) {
-        NSTitlebarAccessoryViewController* controller = [[NSTitlebarAccessoryViewController alloc] init];
+        NSViewController* controller = [[NSViewController alloc] init];
         controller.view = [[NSView alloc] init];
         [controller.view setFrame:NSMakeRect(0, 0, 0, 0)];
         [controller _setHidden:YES animated:NO];
@@ -877,8 +877,8 @@ AWT_ASSERT_APPKIT_THREAD;
     AWT_ASSERT_APPKIT_THREAD;
 
     return ownerWindow != nil &&
-           ([ownerWindow delayShowing] || !ownerWindow.nsWindow.onActiveSpace) &&
-           !nsWindow.visible;
+           ([ownerWindow delayShowing] || ![ownerWindow.nsWindow isOnActiveSpace]) &&
+           ![nsWindow isVisible];
 }
 
 - (BOOL) checkBlockingAndOrder {
@@ -905,13 +905,13 @@ AWT_ASSERT_APPKIT_THREAD;
     }
 
     // show delayed windows
-    for (NSWindow *window in NSApp.windows) {
-        if ([AWTWindow isJavaPlatformWindowVisible:window] && !window.visible) {
+    for (NSWindow *window in [NSApp windows]) {
+        if ([AWTWindow isJavaPlatformWindowVisible:window] && ![window isVisible]) {
             AWTWindow *awtWindow = (AWTWindow *)[window delegate];
             while (awtWindow.ownerWindow != nil) {
                 awtWindow = awtWindow.ownerWindow;
             }
-            if (awtWindow.nsWindow.visible && awtWindow.nsWindow.onActiveSpace) {
+            if ([awtWindow.nsWindow isVisible] && [awtWindow.nsWindow isOnActiveSpace]) {
                 [awtWindow checkBlockingAndOrder];
             }
         }
@@ -1635,7 +1635,9 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
     return shrinkingFactor;
 }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100
 - (void) setUpCustomTitleBar {
+
     if (self.customTitleBarConstraints != nil) {
         [self resetCustomTitleBar];
     }
@@ -1675,12 +1677,16 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
 
     self.customTitleBarConstraints = [[NSMutableArray alloc] init];
     titlebarContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    // MAVERICKS: layout anchors require 10.11+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100
     self.customTitleBarHeightConstraint = [titlebarContainer.heightAnchor constraintEqualToConstant:self.customTitleBarHeight];
     [self.customTitleBarConstraints addObjectsFromArray:@[
         [titlebarContainer.leftAnchor constraintEqualToAnchor:themeFrame.leftAnchor],
         [titlebarContainer.widthAnchor constraintEqualToAnchor:themeFrame.widthAnchor],
         [titlebarContainer.topAnchor constraintEqualToAnchor:themeFrame.topAnchor],
         self.customTitleBarHeightConstraint,
+    ];
+#endif
     ]];
 
     [self.nsWindow setIgnoreMove:YES];
@@ -1729,6 +1735,11 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
     [self updateCustomTitleBarInsets:self.customTitleBarControlsVisible];
 }
 
+#else
+- (void) setUpCustomTitleBar { /* Layout anchors require 10.11+ */ }
+#endif
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100
 - (void) updateCustomTitleBarConstraints {
     self.customTitleBarHeightConstraint.constant = self.customTitleBarHeight;
     CGFloat shrinkingFactor = self.customTitleBarButtonShrinkingFactor;
@@ -1742,6 +1753,9 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
 
     [self updateFullScreenButtons];
 }
+#else
+- (void) updateCustomTitleBarConstraints { }
+#endif
 
 - (void) resetCustomTitleBar {
     // See [setUpCustomTitleBar] for the view hierarchy we're working with
@@ -1908,7 +1922,7 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
                                          screenContentRect.origin.y - frame.origin.y,
                                          screenContentRect.size.width,
                                          screenContentRect.size.height);
-        nsWindow.contentView.frame = contentFrame;
+        ((NSView*)nsWindow.contentView).frame = contentFrame;
     }
     // NSWindowStyleMaskFullScreen bit shouldn't be updated directly
     [nsWindow setStyleMask:(((NSWindowStyleMask) styleMask) & ~NSWindowStyleMaskFullScreen |
@@ -1916,7 +1930,7 @@ static const CGFloat DefaultHorizontalTitleBarButtonOffset = 20.0;
     // calls methods on NSWindow to change other properties, based on the mask
     [self setPropertiesForStyleBits:newBits mask:mask];
 
-    if (!fullscreen && !self.nsWindow.miniaturized) {
+    if (!fullscreen && ![self.nsWindow isMiniaturized]) {
         [self _deliverMoveResizeEvent];
     }
 
@@ -2296,7 +2310,7 @@ JNI_COCOA_ENTER(env);
                     screenContentRect.origin.y - frame.origin.y,
                     screenContentRect.size.width,
                     screenContentRect.size.height);
-                nsWindow.contentView.frame = contentFrame;
+                ((NSView*)nsWindow.contentView).frame = contentFrame;
                 resized = YES;
             }
             if (window.isJustCreated) {
@@ -2618,7 +2632,7 @@ JNI_COCOA_ENTER(env);
 
     NSWindow *nsWindow = OBJC(windowPtr);
     [ThreadUtilities performOnMainThreadWaiting:(BOOL)wait block:^(){
-        if (nsWindow.keyWindow) {
+        if ([nsWindow isKeyWindow]) {
             // When 'windowDidResignKey' is called during 'orderOut', current key window
             // is reported as 'nil', so it's impossible to create WINDOW_FOCUS_LOST event
             // with correct 'opposite' window.
@@ -2805,9 +2819,8 @@ void enableFullScreenSpecial(NSWindow *nsWindow) {
     NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] init];
     [nsWindow encodeRestorableStateWithCoder:coder];
     [coder encodeBool:YES forKey:@"NSIsFullScreen"];
-    NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:coder.encodedData];
+    NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:coder]];
     decoder.requiresSecureCoding = YES;
-    decoder.decodingFailurePolicy = NSDecodingFailurePolicySetErrorAndReturn;
     [nsWindow restoreStateWithCoder:decoder];
     [decoder finishDecoding];
     [decoder release];
@@ -2831,7 +2844,7 @@ JNI_COCOA_ENTER(env);
     [ThreadUtilities performOnMainThreadWaiting:NO block:^(){
         static BOOL inProgress = NO;
         if ((nsWindow.styleMask & NSWindowStyleMaskFullScreen) != NSWindowStyleMaskFullScreen &&
-            (inProgress || !NSApp.active)) {
+            (inProgress || ![NSApp isActive])) {
             enableFullScreenSpecial(nsWindow);
             if ((nsWindow.styleMask & NSWindowStyleMaskFullScreen) == NSWindowStyleMaskFullScreen) return; // success
             // otherwise fall back to standard approach
@@ -3026,10 +3039,10 @@ JNIEXPORT void JNICALL Java_sun_lwawt_macosx_CPlatformWindow_nativeSetRoundedCor
     NSWindow *w = (NSWindow *)jlong_to_ptr(windowPtr);
     [ThreadUtilities performOnMainThreadWaiting:NO block:^(){
         w.hasShadow = YES;
-        w.contentView.wantsLayer = YES;
-        w.contentView.layer.cornerRadius = radius;
-        w.contentView.layer.masksToBounds = YES;
-        w.contentView.layer.opaque = NO;
+        ((NSView*)w.contentView).wantsLayer = YES;
+        ((NSView*)w.contentView).layer.cornerRadius = radius;
+        ((NSView*)w.contentView).layer.masksToBounds = YES;
+        ((NSView*)w.contentView).layer.opaque = NO;
 
         if (borderWidth > 0) {
             CGFloat alpha = (((borderRgb >> 24) & 0xff) / 255.0);
@@ -3038,14 +3051,14 @@ JNIEXPORT void JNICALL Java_sun_lwawt_macosx_CPlatformWindow_nativeSetRoundedCor
             CGFloat blue  = (((borderRgb >>  0) & 0xff) / 255.0);
             NSColor *color = [NSColor colorWithDeviceRed:red green:green blue:blue alpha:alpha];
 
-            w.contentView.layer.borderWidth = borderWidth;
-            w.contentView.layer.borderColor = color.CGColor;
+            ((NSView*)w.contentView).layer.borderWidth = borderWidth;
+            ((NSView*)w.contentView).layer.borderColor = color.CGColor;
         }
 
         w.backgroundColor = NSColor.clearColor;
         w.opaque = NO;
         // remove corner radius animation
-        [w.contentView.layer removeAllAnimations];
+        [((NSView*)w.contentView).layer removeAllAnimations];
         [w invalidateShadow];
     }];
 

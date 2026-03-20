@@ -32,7 +32,7 @@
  */
 @implementation ScrollBarAccessibility
 
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityScrollBarRole;
 }
@@ -43,13 +43,13 @@
     jobject elementAxContext = [self axContextWithEnv:env];
     if (isHorizontal(env, elementAxContext, fComponent)) {
         (*env)->DeleteLocalRef(env, elementAxContext);
-        return NSAccessibilityOrientationHorizontal;
+        return 0;
     } else if (isVertical(env, elementAxContext, fComponent)) {
         (*env)->DeleteLocalRef(env, elementAxContext);
-        return NSAccessibilityOrientationVertical;
+        return 1;
     } else {
         (*env)->DeleteLocalRef(env, elementAxContext);
-        return NSAccessibilityOrientationUnknown;
+        return 0;
     }
 }
 @end

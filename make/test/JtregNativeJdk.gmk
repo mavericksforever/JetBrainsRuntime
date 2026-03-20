@@ -97,7 +97,7 @@ ifeq ($(call isTargetOs, macosx), true)
   BUILD_JDK_JTREG_LIBRARIES_LIBS_libTestDynamicStore := \
       -framework Cocoa -framework SystemConfiguration
   BUILD_JDK_JTREG_LIBRARIES_LIBS_libSharedTexturesTest := \
-      -framework Cocoa -framework Metal
+      -framework Cocoa
 else
   BUILD_JDK_JTREG_EXCLUDE += libTestMainKeyWindow.m
   BUILD_JDK_JTREG_EXCLUDE += libTestDynamicStore.m

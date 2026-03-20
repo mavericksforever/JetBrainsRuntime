@@ -229,7 +229,7 @@ void setOSNameAndVersion(java_props_t *sprops) {
 
     NSString *nsVerStr = NULL;
     char* osVersionCStr = NULL;
-    NSOperatingSystemVersion osVer = [[NSProcessInfo processInfo] operatingSystemVersion];
+    struct { long majorVersion; long minorVersion; long patchVersion; } osVer = {10, 9, 5};
     // Some macOS versions require special handling. For example,
     // when the NSOperatingSystemVersion reports 10.16 as the version
     // then it should be treated as 11. Similarly, when it reports 16.0

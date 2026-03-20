@@ -195,7 +195,6 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBAWT, \
         -framework AudioToolbox \
         -framework Cocoa \
         -framework JavaRuntimeSupport \
-        -framework Metal \
         -framework OpenGL, \
     LIBS_windows := advapi32.lib comctl32.lib comdlg32.lib delayimp.lib \
         gdi32.lib gdiplus.lib imm32.lib kernel32.lib ole32.lib shell32.lib shlwapi.lib \
@@ -522,7 +521,6 @@ ifeq ($(call isTargetOs, macosx), true)
       libawt_lwawt/font \
       libawt_lwawt/java2d \
       libawt_lwawt/java2d/opengl \
-      libawt_lwawt/java2d/metal \
       include \
       common/awt/debug \
       common/java2d \
@@ -554,11 +552,6 @@ ifeq ($(call isTargetOs, macosx), true)
       DISABLED_WARNINGS_clang_CGLLayer.m := semicolon-before-method-body, \
       DISABLED_WARNINGS_clang_ImageSurfaceData.m := enum-conversion \
           parentheses-equality, \
-      DISABLED_WARNINGS_clang_MTLBlitLoops.m := pointer-arith, \
-      DISABLED_WARNINGS_clang_MTLPipelineStatesStorage.m := \
-          semicolon-before-method-body, \
-      DISABLED_WARNINGS_clang_MTLRenderer.m := gnu-folding-constant, \
-      DISABLED_WARNINGS_clang_MTLVertexCache.m := pointer-arith, \
       DISABLED_WARNINGS_clang_OGLBufImgOps.c := format-nonliteral, \
       DISABLED_WARNINGS_clang_OGLPaints.c := format-nonliteral, \
       DISABLED_WARNINGS_clang_PrinterView.m := enum-conversion, \
@@ -574,10 +567,8 @@ ifeq ($(call isTargetOs, macosx), true)
           -framework IOKit \
           -framework ExceptionHandling \
           -framework JavaRuntimeSupport \
-          -framework Metal \
           -framework OpenGL \
           -framework QuartzCore \
-          -framework UniformTypeIdentifiers \
           -framework Security, \
       STATIC_LIB_EXCLUDE_OBJS := $(LIBAWT_LWAWT_STATIC_EXCLUDE_OBJS), \
   ))

@@ -26,7 +26,7 @@
 
 #import "CommonComponentAccessibility.h"
 
-@interface TableRowAccessibility : CommonComponentAccessibility <NSAccessibilityRow>
+@interface TableRowAccessibility : CommonComponentAccessibility 
 
 @property(readonly) NSUInteger rowNumberInTable;
 

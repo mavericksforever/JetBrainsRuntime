@@ -29,7 +29,7 @@
  * This is the protocol for the MenuItem component.
  */
 @implementation MenuItemAccessibility
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityMenuItemRole;
 }

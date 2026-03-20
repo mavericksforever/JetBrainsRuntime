@@ -25,9 +25,9 @@
 
 #import "ButtonAccessibility.h"
 
-@interface CheckboxAccessibility : ButtonAccessibility <NSAccessibilityCheckBox> {
+@interface CheckboxAccessibility : ButtonAccessibility  {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (id _Nonnull)accessibilityValue;
 @end

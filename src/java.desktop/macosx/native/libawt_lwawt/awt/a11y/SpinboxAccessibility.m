@@ -32,7 +32,7 @@
  * Implementation of the accessibility peer for the spinner role
  */
 @implementation SpinboxAccessibility
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     return NSAccessibilityIncrementorRole;
 }

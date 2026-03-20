@@ -38,6 +38,10 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 
+#ifndef MAP_ANONYMOUS
+#define MAP_ANONYMOUS MAP_ANON
+#endif
+
 // The backing is represented by a reserved virtual address space, in which
 // we commit and uncommit physical memory. Multi-mapping the different heap
 // views is done by simply remapping the backing memory using mach_vm_remap().

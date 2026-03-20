@@ -27,7 +27,7 @@
 
 @implementation StaticTextAccessibility
 
-- (NSAccessibilityRole _Nonnull)accessibilityRole
+- (NSString * _Nonnull)accessibilityRole
 {
     if ([fJavaRole isEqualToString:@"hyperlink"]) {
         return NSAccessibilityLinkRole;

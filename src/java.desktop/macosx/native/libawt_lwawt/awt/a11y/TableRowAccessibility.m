@@ -39,12 +39,12 @@ static jclass sjc_CAccessibility = NULL;
 
 // NSAccessibilityElement protocol methods
 
-- (NSAccessibilityRole)accessibilityRole
+- (NSString *)accessibilityRole
 {
     return NSAccessibilityRowRole;
 }
 
-- (NSAccessibilitySubrole)accessibilitySubrole
+- (NSString *)accessibilitySubrole
 {
     return NSAccessibilityTableRowSubrole;
 }
@@ -70,7 +70,7 @@ static jclass sjc_CAccessibility = NULL;
 
         jsize arrayLen = (*env)->GetArrayLength(env, jchildrenAndRoles);
         children = [NSMutableArray arrayWithCapacity:arrayLen / 2];
-        int childIndex = [self rowNumberInTable] * [(TableAccessibility *)parent accessibilityColumnCount];
+        int childIndex = [self rowNumberInTable] * (NSInteger)[(TableAccessibility *)parent accessibilityColumnCount];
 
         for (NSInteger i = 0; i < arrayLen; i += 2) {
             jobject /* Accessible */ jchild = (*env)->GetObjectArrayElement(env, jchildrenAndRoles, i);

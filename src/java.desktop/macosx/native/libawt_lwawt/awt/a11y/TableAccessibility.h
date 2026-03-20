@@ -26,9 +26,9 @@
 
 #import "CommonComponentAccessibility.h"
 
-@interface TableAccessibility : CommonComponentAccessibility <NSAccessibilityTable>
+@interface TableAccessibility : CommonComponentAccessibility 
 {
-    NSMutableDictionary<NSNumber*, id> *rowCache;
+    NSMutableDictionary *rowCache;
     BOOL cacheValid;
 }
 

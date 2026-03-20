@@ -3062,7 +3062,7 @@ GetFilteredFonts()
 {
     if (sFilteredFonts == nil) {
         NSFontManager *fontManager = [NSFontManager sharedFontManager];
-        NSArray<NSString *> *availableFonts= [fontManager availableFonts];
+        NSArray *availableFonts= [fontManager availableFonts];
         NSUInteger fontCount = [availableFonts count];
         NSMutableArray* allFonts = [NSMutableArray arrayWithCapacity:fontCount];
         NSMutableDictionary* fontFamilyTable = [[NSMutableDictionary alloc] initWithCapacity:fontCount];

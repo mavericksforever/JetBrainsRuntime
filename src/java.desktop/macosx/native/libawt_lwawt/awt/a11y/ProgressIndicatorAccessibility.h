@@ -31,6 +31,6 @@
 @interface ProgressIndicatorAccessibility : GroupAccessibility {
 
 };
-- (NSAccessibilityRole _Nonnull)accessibilityRole;
+- (NSString * _Nonnull)accessibilityRole;
 - (NSString * _Nullable)accessibilityValue;
 @end
